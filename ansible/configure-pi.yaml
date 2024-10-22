@@ -1,0 +1,67 @@
+---
+- name: Configure Pi for Pi-Drive
+  hosts: all
+  # CHANGE USERNAME TO YOUR USERNAME
+  remote_user: garrett
+  become: yes
+  vars:
+  # CHANGE FILE PATH TO YOUR SSH FILE PATH
+    ansible_ssh_private_key_file: ~/.ssh/garrett
+  tasks:
+    - name: Update all apt packages
+      apt:
+        update_cache: yes
+        upgrade: dist
+
+    # used to clone the project repo
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    # start with a fresh install of docker
+    - name: Remove previous docker packages
+      apt:
+        pkg:
+          - docker.io
+          - docker-compose
+          - docker-compose-v2
+          - docker-doc
+          - podman-docker
+          - containerd 
+          - runc
+        state: absent
+        update_cache: true
+
+    - name: Install required system packages
+      apt:
+        name:
+          - apt-transport-https
+          - ca-certificates
+          - curl
+          - software-properties-common
+          - python3-pip
+          - virtualenv
+        state: latest
+        update_cache: true
+
+    - name: Add Docker GPG apt Key
+      apt_key:
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+
+    - name: Add Docker Repository
+      apt_repository:
+        repo: deb https://download.docker.com/linux/ubuntu noble stable
+        state: present
+
+    - name: Update apt and install docker-ce
+      apt:
+        name: 
+          - docker-ce
+          - docker-ce-cli 
+          - containerd.io 
+          - docker-buildx-plugin
+          - docker-compose-plugin
+        state: latest
+        update_cache: true
