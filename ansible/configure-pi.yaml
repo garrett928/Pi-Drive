@@ -65,3 +65,10 @@
           - docker-compose-plugin
         state: latest
         update_cache: true
+
+    - name: Update Perms
+      # make the discover file executeable
+      file: 
+        path: /home/{{ansible_user}}/Pi-Drive/discover-wifi.sh
+        state: file
+        mode: a+x
