@@ -2,4 +2,4 @@
 /docker/influxdb-admin-password
 /docker/influxdb-admin-tocken
 
-.vscode/*
+/.vscode/*
