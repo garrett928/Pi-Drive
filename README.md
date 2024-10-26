@@ -53,3 +53,10 @@ These are notes to myself.
   - The goal here being to prevent a script crashing from preventing anymore data from being sent to the server
   - This is a later feature / issue to worry about, however
   - For now, our telemetry script will simply check to see if the process already exist and then exit if it doesifco    
+
+# Useful Resources
+
+- [HTTP 1.1 standard](https://www.ietf.org/rfc/rfc2616.txt) lays out the definition and uses of GET, POST, PUT, and delete
+- [REST APIS vs RPC](https://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven) What actually makes something RESTful? Using HTTP request is not enough
+- [Hypertext Application Language (HAL)](https://stateless.co/hal_specification.html) how to navigate hyperlink resources in an API
+- [Getting started with spring RESTful API](https://spring.io/guides/tutorials/rest) a pretty indepth guide at setting up spring to serve a RESTful API
