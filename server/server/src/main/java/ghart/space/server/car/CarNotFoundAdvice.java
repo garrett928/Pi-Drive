@@ -1,4 +1,4 @@
-package ghart.space.server;
+package ghart.space.server.car;
 
 
 import org.springframework.http.HttpStatus;

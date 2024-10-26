@@ -1,4 +1,4 @@
-package ghart.space.server;
+package ghart.space.server.car;
 
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;

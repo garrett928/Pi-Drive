@@ -1,4 +1,4 @@
-package ghart.space.server;
+package ghart.space.server.car;
 
 import java.util.Objects;
 
@@ -7,16 +7,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
-class Car {
+public class Car {
 
     private @Id @GeneratedValue Long id;
     private String make;
     private String model;
     private String yr; // year is a reserved word in SQL
 
-    Car() {}
+    public Car() {}
 
-    Car(String make, String model, String year) {
+    public Car(String make, String model, String year) {
 
         this.make = make;
         this.model = model;
