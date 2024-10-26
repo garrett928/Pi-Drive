@@ -2,6 +2,16 @@
 
 RasberryPi based car logging and telemetry software
 
+# Repository Structure
+
+```
+rasp-pi/ (Ansible playbook and application files to configure raspberry-pi for data logging)
+server/ (software stack for collecting and monitoring car telemetry from raspberry-pi)
+.gitignore
+LICENSE
+README.md
+```
+
 # Setup
 
 ## Equipment Requirements
