@@ -26,6 +26,19 @@ README.md
 Requirments for software on the computer you are using to setup your pi and server.
 
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- Docker
+
+If you would like to edit the source code there are additional requirements.
+
+<details>
+<summary>Developer Requirements</summary>
+
+- Java 23
+- VScode with the following extensions
+  - [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack)
+  - [Java Developor Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
+
+</details>
 
 ## Raspberry Pi Setup
 
@@ -42,6 +55,26 @@ I'm going to lightly gloss over the pi setup since this is not intended to be a 
 ### Install project software and tools onto pi
 
 `ansible-playbook -i ./ansible/inventory.ini ./ansible/configure-pi.yaml `
+
+## Server Setup
+
+If you are editing the source code then you should follow these additional steps first.
+
+<details>
+
+<summary>Developer steps</summary>
+
+Running the following commands will package any edits you've made to the source code into a jar file and then build a new docker container with the update jar file.
+
+```
+cd server/server
+./gradlew clean bootjar
+docker build . -t telemetry-server
+```
+
+</details>
+
+
 
 ### Notes
 
