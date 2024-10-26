@@ -69,6 +69,6 @@
     - name: Update Perms
       # make the discover file executeable
       file: 
-        path: /home/{{ansible_user}}/Pi-Drive/discover-wifi.sh
+        path: /home/{{ansible_user}}/Pi-Drive/rasp-pi/discover-wifi.sh
         state: file
         mode: a+x
