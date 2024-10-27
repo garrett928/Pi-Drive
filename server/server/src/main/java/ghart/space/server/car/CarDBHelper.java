@@ -120,13 +120,17 @@ public class CarDBHelper {
                         |> unique(column: \"id\")
                         """.formatted(InfluxDBConnectionFactory.CAR_BUCKET, id);
 
-        FluxTable fluxTable = client.getQueryApi().query(query, InfluxDBConnectionFactory.ORG).get(0);
-        List<FluxRecord> records = fluxTable.getRecords();
-
-        // this can be done more safely
-        // I'm making assumptions that the query will always return one table with one record
-        if(!records.isEmpty()){
-            car = this.carFromRecord(records.get(0));
+        List<FluxTable> fluxTables = client.getQueryApi().query(query, InfluxDBConnectionFactory.ORG);
+        if(!fluxTables.isEmpty()){
+            // we know that this query groups and filters by telemetry measurements
+            // therefore we know there will only be one table or no table
+            List<FluxRecord> records = fluxTables.get(0).getRecords();
+            
+            // this can be done more safely
+            // I'm making assumptions that the query will always return one record matching an id
+            if(!records.isEmpty()){
+                car = this.carFromRecord(records.get(0));
+            }
         }
         
         client.close();
