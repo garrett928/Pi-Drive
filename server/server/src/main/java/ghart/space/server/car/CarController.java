@@ -21,10 +21,12 @@ class CarController {
 
     private final CarRepository repository;
     private final CarModelAssembler assembler;
+    private CarDBHelper dbHelper;
 
     CarController(CarRepository repository,  CarModelAssembler assembler) {
     this.repository = repository;
     this.assembler = assembler;
+    this.dbHelper = new CarDBHelper();
     }
 
 
@@ -32,6 +34,7 @@ class CarController {
     @GetMapping("/cars")
     CollectionModel<EntityModel<Car>> all() {
 
+        System.out.println(dbHelper.findAllCars().toString());
         List<EntityModel<Car>> cars = repository.findAll().stream() //
             .map(assembler::toModel) //
             .collect(Collectors.toList());
