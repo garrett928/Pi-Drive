@@ -17,17 +17,29 @@ public class CarDBHelper {
 
     public List<Car> findAllCars(){
         InfluxDBClient client = this.getClient();
-        String query = "from(bucket: \"car-test\") |> range(start: -1y)" ;
-    List<FluxTable> tables = client.getQueryApi().query(query, InfluxDBConnectionFactory.ORG);
+        String query = """
+                        from(bucket: \"car-test\")
+                        |> range(start: -1y)
+                        |> group(columns: [\"_measurement\"])
+                        |> filter(fn: (r) => r[\"_measurement\"] == \"carTelemetry\")
+                        |> keep(columns: [\"id\", \"make\", \"model\", \"year\"])
+                        |> unique(column: \"id\")
+                        """;
+    FluxTable fluxTable = client.getQueryApi().query(query, InfluxDBConnectionFactory.ORG)[0];
 
-    for (FluxTable table : tables) {
-    for (FluxRecord record : table.getRecords()) {
-        System.out.println(record);
-    }
-}
+        List<FluxRecord> records = fluxTable.getRecords();
+        for (FluxRecord record : records) {
+            String make = record.getValueByKey("make")
+            String model = record.getValueByKey("model")
+            String year = record.getValueByKey("year")
+            String id = record.getValueByKey("id")
+            Car car = new Car()
+        }
+    
 
     List<Car> list = new ArrayList<Car>();
-
+    // client.close
+    // make sure to close the client. However you do that
     return list;
 }
 
