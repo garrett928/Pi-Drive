@@ -55,44 +55,39 @@ class CarController {
 	EntityModel<Car> one(@PathVariable Integer id) {
 
         Car car = dbHelper.findById(id);
-
-        if(car == null){
-            throw new CarNotFoundException(id);
-        }
-
-		// Car car = repository.findById(id) //
-		// 		.orElseThrow(() -> new CarNotFoundException(id));
-
+        if(car == null){ throw new CarNotFoundException(id); }
 		return assembler.toModel(car);
 	}
 
-    @PutMapping("/cars/{id}")
-    ResponseEntity<?> replaceEmployee(@RequestBody Car newCar, @PathVariable int id) {
+    // Do not allow updating a single car. The entries are allready written to the database
+    // @PutMapping("/cars/{id}")
+    // ResponseEntity<?> replaceCar(@RequestBody Car newCar, @PathVariable int id) {
     
-      Car updatedCar = repository.findById(id) //
-            .map(car -> {
-                car.setMake(newCar.getMake());
-                car.setModel(newCar.getModel());
-                car.setYear(newCar.getYear());
-                return repository.save(car);
-            })
-            .orElseGet(() -> {
-                return repository.save(newCar);
-            });
+    //   Car updatedCar = repository.findById(id) //
+    //         .map(car -> {
+    //             car.setMake(newCar.getMake());
+    //             car.setModel(newCar.getModel());
+    //             car.setYear(newCar.getYear());
+    //             return repository.save(car);
+    //         })
+    //         .orElseGet(() -> {
+    //             return repository.save(newCar);
+    //         });
         
-        EntityModel<Car> entityModel = assembler.toModel(updatedCar);
+    //     EntityModel<Car> entityModel = assembler.toModel(updatedCar);
         
-        return ResponseEntity //
-            .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
-            .body(entityModel);
-    }
+    //     return ResponseEntity //
+    //         .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
+    //         .body(entityModel);
+    // }
 
     
-    @DeleteMapping("/cars/{id}")
-    ResponseEntity<?> deleteCar(@PathVariable Integer id) {
+    // could allow for deleting entries in the future
+//     @DeleteMapping("/cars/{id}")
+//     ResponseEntity<?> deleteCar(@PathVariable Integer id) {
 
-        repository.deleteById(id);
+//         repository.deleteById(id);
 
-        return ResponseEntity.noContent().build();
-}
+//         return ResponseEntity.noContent().build();
+// }
 }
