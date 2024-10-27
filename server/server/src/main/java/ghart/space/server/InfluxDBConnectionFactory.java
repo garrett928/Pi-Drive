@@ -26,6 +26,7 @@ public class InfluxDBConnectionFactory {
      * @return {@link InfluxDBClient} instance
      */
     public static InfluxDBClient create(){
+        // TODO add check on if token is null. causes a crash
         return InfluxDBClientFactory.create(URL, token.toCharArray());
     }
 
