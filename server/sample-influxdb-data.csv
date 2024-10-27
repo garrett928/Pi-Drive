@@ -1,0 +1,3 @@
+// Example
+carTelemetry,make=honda,model=fit,year=2007,id=1 odometer=180000,rpm=2600
+carTelemetry,make=jeep,model=renegade,year=2018,id=2 odometer=35000,rpm=2200
