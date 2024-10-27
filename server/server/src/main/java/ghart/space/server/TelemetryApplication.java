@@ -15,16 +15,17 @@ public class TelemetryApplication {
 
     public static void main(String... args) {
 
-        InfluxDBClient client = InfluxDBConnectionFactory.create();
+        // keep as example or working writes
+        // InfluxDBClient client = InfluxDBConnectionFactory.create();
 
-        Point point = Point
-        .measurement("mem")
-        .addTag("host", "host1")
-        .addField("used_percent", 20)
-        .time(Instant.now(), WritePrecision.NS);    
+        // Point point = Point
+        // .measurement("mem")
+        // .addTag("host", "host1")
+        // .addField("used_percent", 20.0)
+        // .time(Instant.now(), WritePrecision.NS);    
 
-        WriteApiBlocking writeApi = client.getWriteApiBlocking();
-        writeApi.writePoint(InfluxDBConnectionFactory.CAR_BUCKET, InfluxDBConnectionFactory.ORG, point);
+        // WriteApiBlocking writeApi = client.getWriteApiBlocking();
+        // writeApi.writePoint(InfluxDBConnectionFactory.CAR_BUCKET, InfluxDBConnectionFactory.ORG, point);
 
         SpringApplication.run(TelemetryApplication.class, args);
     }
