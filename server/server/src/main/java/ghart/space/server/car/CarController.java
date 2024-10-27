@@ -48,7 +48,7 @@ class CarController {
 
     @PostMapping("/cars")
     ResponseEntity<?> newCar(@RequestBody Car newCar) {
-    EntityModel<Car> entityModel = assembler.toModel(repository.save(newCar));
+    EntityModel<Car> entityModel = assembler.toModel(dbHelper.saveNewCar(newCar));
     // ResponseEntity<?> newCar(RequestEntity<String> requestEntity ) {
         // I'm defaulting to just parsing the json manually
         // Ideally this method would use the requestBody annotation and java beans / POJO to 
@@ -82,7 +82,7 @@ class CarController {
             .map(car -> {
                 car.setMake(newCar.getMake());
                 car.setModel(newCar.getModel());
-                car.setYr(newCar.getYr());
+                car.setYear(newCar.getYear());
                 return repository.save(car);
             })
             .orElseGet(() -> {

@@ -61,12 +61,12 @@ public class Car {
         return this.model;
     }
 
-    public int getYr() {
+    public int getYear() {
         return this.yr;
     }
 
     public void setId(int id) {
-        this.id = this.hashCode();
+        this.id = id;
     }
 
     public void setMake(String make) {
@@ -77,8 +77,8 @@ public class Car {
         this.model = model;
     }
 
-    public void setYr(int yr) {
-        this.yr = yr;
+    public void setYear(int year) {
+        this.yr = year;
     }
 
     

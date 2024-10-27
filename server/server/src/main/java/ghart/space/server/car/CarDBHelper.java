@@ -1,9 +1,13 @@
 package ghart.space.server.car;
 
 import java.util.List;
+import java.time.Instant;
 import java.util.ArrayList;
 
 import com.influxdb.client.InfluxDBClient;
+import com.influxdb.client.WriteApiBlocking;
+import com.influxdb.client.domain.WritePrecision;
+import com.influxdb.client.write.Point;
 import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 
@@ -38,22 +42,36 @@ public class CarDBHelper {
         for (FluxRecord record : records) {
             String make = (String) record.getValueByKey("make");
             String model = (String) record.getValueByKey("model");
-            int year = (int) record.getValueByKey("year");
+            int year = Integer.valueOf((String) record.getValueByKey("year"));
             int id = Integer.valueOf(((String) record.getValueByKey("id")));
             Car car = new Car(make, model, year, id);
             carList.add(car);
         }
 
         // TODO: make sure to close the client. However you do that
-        // client.close
+        client.close();
         return carList;
     }
 
     public Car saveNewCar(Car newCar){
         InfluxDBClient client = this.getClient();
+
+        Point point = Point
+            .measurement(InfluxDBConnectionFactory.MEASUREMENT)
+            .addTag("make", newCar.getMake())
+            .addTag("model", newCar.getModel())
+            .addTag("year", String.valueOf(newCar.getYear()))
+            .addTag("id", String.valueOf(newCar.getId()))
+            .addField("rpm", 0.0) // one field must be present to write a point
+            .time(Instant.now(), WritePrecision.MS);
+
+        WriteApiBlocking writeApi = client.getWriteApiBlocking();
+        writeApi.writePoint(InfluxDBConnectionFactory.CAR_BUCKET, InfluxDBConnectionFactory.ORG, point);
+
         System.out.println("NEW CAR");
         System.out.println(newCar);
-        return new Car("honda", "fit", 2008);
+        client.close();
+        return newCar;
     }
 
     private InfluxDBClient getClient(){

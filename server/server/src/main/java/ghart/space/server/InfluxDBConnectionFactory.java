@@ -16,6 +16,7 @@ public class InfluxDBConnectionFactory {
     public static final String URL = "http://bomato.ghart.space:8086";
     public static final String CAR_BUCKET = "car-test";
     public static final String ORG = "ghartorg";
+    public static final String MEASUREMENT = "carTelemetry";
 
     public InfluxDBConnectionFactory(){}
 
