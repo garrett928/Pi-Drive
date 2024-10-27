@@ -35,31 +35,16 @@ class CarController {
     // Aggregate root
     @GetMapping("/cars")
     CollectionModel<EntityModel<Car>> all() {
-
-        System.out.println(dbHelper.findAllCars().toString());
-        // List<EntityModel<Car>> cars = repository.findAll().stream()
         List<EntityModel<Car>> cars = dbHelper.findAllCars().stream()
             .map(assembler::toModel) //
             .collect(Collectors.toList());
 
         return CollectionModel.of(cars, linkTo(methodOn(CarController.class).all()).withSelfRel());
     }
-    // end::get-aggregate-root[]
 
     @PostMapping("/cars")
     ResponseEntity<?> newCar(@RequestBody Car newCar) {
-    EntityModel<Car> entityModel = assembler.toModel(dbHelper.saveNewCar(newCar));
-    // ResponseEntity<?> newCar(RequestEntity<String> requestEntity ) {
-        // I'm defaulting to just parsing the json manually
-        // Ideally this method would use the requestBody annotation and java beans / POJO to 
-        // convert the json to an object automatically. 
-        // However, I want the id field to be auto-generated based on the make, model, and yr
-        // and I have been unsusseful in implementing that behavior.
-        // System.out.println("BODY");
-        // System.out.println(requestEntity.getBody());
-
-        // dbHelper.saveNewCar(newCar);
-
+        EntityModel<Car> entityModel = assembler.toModel(dbHelper.saveNewCar(newCar));
         return ResponseEntity //
             .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
             .body(entityModel);
@@ -69,8 +54,14 @@ class CarController {
 	@GetMapping("/cars/{id}")
 	EntityModel<Car> one(@PathVariable Integer id) {
 
-		Car car = repository.findById(id) //
-				.orElseThrow(() -> new CarNotFoundException(id));
+        Car car = dbHelper.findById(id);
+
+        if(car == null){
+            throw new CarNotFoundException(id);
+        }
+
+		// Car car = repository.findById(id) //
+		// 		.orElseThrow(() -> new CarNotFoundException(id));
 
 		return assembler.toModel(car);
 	}
