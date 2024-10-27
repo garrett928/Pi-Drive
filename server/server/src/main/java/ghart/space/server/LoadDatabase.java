@@ -18,8 +18,8 @@ class LoadDatabase {
     CommandLineRunner initDatabase(CarRepository CarRepository) {
     
         return args -> {
-            CarRepository.save(new Car("Honda", "Fit", "2007"));
-            CarRepository.save(new Car("Jeep", "Renegade", "2018"));
+            CarRepository.save(new Car("Honda", "Fit", 2007));
+            CarRepository.save(new Car("Jeep", "Renegade", 2018));
     
             CarRepository.findAll().forEach(car -> log.info("Preloaded " + car));            
         };

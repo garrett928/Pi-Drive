@@ -1,11 +1,13 @@
 package ghart.space.server.car;
 
+import java.io.FileReader;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,11 +16,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 class CarController {
-
     private final CarRepository repository;
     private final CarModelAssembler assembler;
     private CarDBHelper dbHelper;
@@ -35,7 +37,8 @@ class CarController {
     CollectionModel<EntityModel<Car>> all() {
 
         System.out.println(dbHelper.findAllCars().toString());
-        List<EntityModel<Car>> cars = repository.findAll().stream() //
+        // List<EntityModel<Car>> cars = repository.findAll().stream()
+        List<EntityModel<Car>> cars = dbHelper.findAllCars().stream()
             .map(assembler::toModel) //
             .collect(Collectors.toList());
 
@@ -45,8 +48,17 @@ class CarController {
 
     @PostMapping("/cars")
     ResponseEntity<?> newCar(@RequestBody Car newCar) {
+    EntityModel<Car> entityModel = assembler.toModel(repository.save(newCar));
+    // ResponseEntity<?> newCar(RequestEntity<String> requestEntity ) {
+        // I'm defaulting to just parsing the json manually
+        // Ideally this method would use the requestBody annotation and java beans / POJO to 
+        // convert the json to an object automatically. 
+        // However, I want the id field to be auto-generated based on the make, model, and yr
+        // and I have been unsusseful in implementing that behavior.
+        // System.out.println("BODY");
+        // System.out.println(requestEntity.getBody());
 
-        EntityModel<Car> entityModel = assembler.toModel(repository.save(newCar));
+        // dbHelper.saveNewCar(newCar);
 
         return ResponseEntity //
             .created(entityModel.getRequiredLink(IanaLinkRelations.SELF).toUri()) //
@@ -55,7 +67,7 @@ class CarController {
 
     // Single item
 	@GetMapping("/cars/{id}")
-	EntityModel<Car> one(@PathVariable Long id) {
+	EntityModel<Car> one(@PathVariable Integer id) {
 
 		Car car = repository.findById(id) //
 				.orElseThrow(() -> new CarNotFoundException(id));
@@ -64,7 +76,7 @@ class CarController {
 	}
 
     @PutMapping("/cars/{id}")
-    ResponseEntity<?> replaceEmployee(@RequestBody Car newCar, @PathVariable Long id) {
+    ResponseEntity<?> replaceEmployee(@RequestBody Car newCar, @PathVariable int id) {
     
       Car updatedCar = repository.findById(id) //
             .map(car -> {
@@ -86,7 +98,7 @@ class CarController {
 
     
     @DeleteMapping("/cars/{id}")
-    ResponseEntity<?> deleteCar(@PathVariable Long id) {
+    ResponseEntity<?> deleteCar(@PathVariable Integer id) {
 
         repository.deleteById(id);
 
