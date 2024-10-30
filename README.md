@@ -54,7 +54,7 @@ I'm going to lightly gloss over the pi setup since this is not intended to be a 
 
 ### Install project software and tools onto pi
 
-`ansible-playbook -i ./ansible/inventory.ini ./ansible/configure-pi.yaml `
+`ansible-playbook -i ./rasp-pi/ansible/inventory.ini ./rasp-pi/ansible/configure-pi.yaml `
 
 ## Server Setup
 
