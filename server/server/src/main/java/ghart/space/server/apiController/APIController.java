@@ -62,13 +62,12 @@ class APIController {
     // add a piece of telemetry data to a car
     @PostMapping("/cars/{id}/telemetry")
     ResponseEntity<?> newCarTelemetry(@RequestBody Telemtry telemtry, @PathVariable Integer id) {
-        System.out.println( "inside post handle");
-
         // check the car exist first
         Car car = dbHelper.findById(id);
         if(car == null){ throw new CarNotFoundException(id); }
 
-        System.out.println(telemtry);
+        dbHelper.logTelemetry(telemtry, id);
+
         // respond with the /car/{id} endpoint for the car which we just added data for
         // a more useful response would be sending the data back
         EntityModel<Car> entityModel = assembler.toModel(car);
