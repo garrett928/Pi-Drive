@@ -3,3 +3,5 @@
 /docker/influxdb-admin-tocken
 
 /.vscode/*
+
+**/influxdb_token*
