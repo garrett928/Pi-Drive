@@ -3,6 +3,7 @@ package ghart.space.server.car;
 import java.util.List;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import com.influxdb.client.InfluxDBClient;
 import com.influxdb.client.WriteApiBlocking;
@@ -12,6 +13,9 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 
 import ghart.space.server.InfluxDBConnectionFactory;
+import ghart.space.server.telemetry.Telemtry;
+import ghart.space.server.telemetry.Telemtry.Field;
+import ghart.space.server.telemetry.Telemtry.Tag;
 
 public class CarDBHelper {
 
@@ -71,8 +75,6 @@ public class CarDBHelper {
         WriteApiBlocking writeApi = client.getWriteApiBlocking();
         writeApi.writePoint(InfluxDBConnectionFactory.CAR_BUCKET, InfluxDBConnectionFactory.ORG, point);
 
-        System.out.println("NEW CAR");
-        System.out.println(newCar);
         client.close();
         return newCar;
     }
@@ -135,5 +137,83 @@ public class CarDBHelper {
         
         client.close();
         return car;
+    }
+
+    public void logTelemetry(Telemtry telemtry, Integer id) {
+        InfluxDBClient client = this.getClient();
+        Car car = this.findById(id);
+        List<String> excludedTags = Arrays.asList("make", "model", "year");
+
+        // <measurement>[,<tag_key>=<tag_value>[,<tag_key>=<tag_value>]] <field_key>=<field_value>[,<field_key>=<field_value>] [<timestamp>]
+        String line = InfluxDBConnectionFactory.MEASUREMENT + "," + "id=" + String.valueOf(id);
+        boolean first = true;
+        // parse all tags
+        for(Tag tag : telemtry.getTags()){
+            String name = tag.name();
+            if(excludedTags.contains(name)){
+                // dont include these. we'll include them at the end
+                continue;
+            }
+            line += ",";
+            line += name;
+            line += "=";
+            line += tag.value();
+        }
+
+        for(String tag : excludedTags){
+            // this is a little messy
+            String value;
+            if(tag == "make"){
+                value = car.getMake();
+            }
+            else if (tag == "model"){
+                value = car.getModel();
+            }
+            else {
+                value = String.valueOf(car.getYear());
+            }
+
+            line += ",";
+            line += tag;
+            line += "=";
+            line += value;
+        }
+
+        // add space to seperate tags and fields
+        line += " ";
+        first = true;
+
+        for(Field field : telemtry.getFields()){
+            if(!first){
+                line += ",";
+            }
+            else{
+                first = false;
+            }
+            line += field.name();
+            line += "=";
+            line += field.value();
+        }
+
+        // add space to seperate the fields and the time stamp
+        line += " ";
+
+        if(telemtry.getTimeStamp() == ""){
+            line += Instant.now().toString();
+        }
+        else{
+            line += telemtry.getTimeStamp();
+        }
+
+        System.out.println("WRITING LINE: ");
+        System.out.println(line);
+        WriteApiBlocking writeApi = client.getWriteApiBlocking();
+        writeApi.writeRecord(InfluxDBConnectionFactory.CAR_BUCKET, 
+                                InfluxDBConnectionFactory.ORG, 
+                                WritePrecision.S, 
+                                line);
+        
+
+        client.close();
     }   
 }
