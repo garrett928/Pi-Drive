@@ -74,9 +74,13 @@ docker build . -t telemetry-server
 
 </details>
 
+### Debugging Commands
 
+- `curl -X POST 127.0.0.1:8080/cars -H 'Content-type:application/json' -d '{"make": "Honda", "model": "year", year: 2007}'`
+- `curl -X POST 127.0.0.1:8080/cars -H 'Content-type:application/json' -d  @./server/sample-api-telemetry.json`
+  
 
-### Notes
+### Notes and TODO
 
 These are notes to myself.
 
@@ -85,7 +89,9 @@ These are notes to myself.
   - if the previous telemtry script is unresponive then the new script will kill the old one and picked up where the old script left off
   - The goal here being to prevent a script crashing from preventing anymore data from being sent to the server
   - This is a later feature / issue to worry about, however
-  - For now, our telemetry script will simply check to see if the process already exist and then exit if it doesifco    
+  - For now, our telemetry script will simply check to see if the process already exist and then exit if it does
+  - Sanitize user input from the API. E.g make user input uniform case, check for escaped characters or sql injection?
+  - check that objects exist or dont exist in the data base where appropiate
 
 # Useful Resources
 
