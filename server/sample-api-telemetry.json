@@ -1,15 +1,21 @@
 {
-    "tags": {
-
-    },
-    "fields": {
-        "rpm": {
+    "timeStamp": "2020-01-01T00:00:00Z",
+    "tags": [
+        {
+            "name": "make" ,
+            "value": "honda"
+        }
+    ],
+    "fields": [
+        {
+            "name": "rpm" ,
             "type": "long",
             "value": 2000
         },
-        "throttlePos": {
+        {
+            "name" : "throttlePos",
             "type": "float",
             "value": 0.2
         }
-    }
+    ]
 }
