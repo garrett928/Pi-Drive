@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ghart.space.server.car.Car;
 import ghart.space.server.car.CarNotFoundException;
+import ghart.space.server.telemetry.Telemtry;
 import ghart.space.server.car.CarDBHelper;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -61,12 +61,14 @@ class APIController {
 
     // add a piece of telemetry data to a car
     @PostMapping("/cars/{id}/telemetry")
-    ResponseEntity<?> newCarTelemetry(@PathVariable Integer id) {
+    ResponseEntity<?> newCarTelemetry(@RequestBody Telemtry telemtry, @PathVariable Integer id) {
+        System.out.println( "inside post handle");
 
         // check the car exist first
         Car car = dbHelper.findById(id);
         if(car == null){ throw new CarNotFoundException(id); }
 
+        System.out.println(telemtry);
         // respond with the /car/{id} endpoint for the car which we just added data for
         // a more useful response would be sending the data back
         EntityModel<Car> entityModel = assembler.toModel(car);
