@@ -1,9 +1,17 @@
 {
-    "timeStamp": "2020-01-01T00:00:00Z",
+    "timeStamp": "1730343829",
     "tags": [
         {
             "name": "make" ,
             "value": "honda"
+        },
+        {
+            "name": "model" ,
+            "value": "fit"
+        },
+        {
+            "name": "year" ,
+            "value": "2007"
         }
     ],
     "fields": [
