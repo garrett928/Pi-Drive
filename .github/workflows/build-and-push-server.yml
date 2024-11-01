@@ -34,7 +34,7 @@ jobs:
       # Build the Java project using Gradle
       - name: Build with Gradle
         working-directory: server/server
-        run: gradlew clean bootjar
+        run: ./gradlew clean bootjar
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
