@@ -3,17 +3,17 @@ services:
     image: ghart10/pidrive-server:latest
     container_name: pidrive-server
     restart: unless-stopped
-    # networks:
-    #   - treafik-network
-    secrets:
-      - influxdb_token
+    networks:
+      - treafik-network
+    # secrets:
+    #   - influxdb_token
     environment:
       INFLUXDB_URL: http://bomato.ghart.space:8086
       INFLUXDB_ORG: ghartorg
       INFLUXDB_BUCKET: car-test
       INFLUXDB_MEASUREMENT: carTelementry
-      INFLUXDB_TOKEN_FILE: /run/secrets/influxdb_token
-    
+      # INFLUXDB_TOKEN_FILE: /run/secrets/influxdb_token
+    env_file: stack.env
     # uncomment ports if you are NOT using traefik
     ports:
       - 8080:8080
@@ -28,10 +28,10 @@ services:
       - "traefik.http.routers.pidrive.tls.certresolver=leresolver"
       - "traefik.docker.network=treafik-network"
 
-# networks:
-#   treafik-network:
-#     external: true
-#     name: treafik-network
+networks:
+  treafik-network:
+    external: true
+    name: treafik-network
 
 secrets:
   influxdb_token:
