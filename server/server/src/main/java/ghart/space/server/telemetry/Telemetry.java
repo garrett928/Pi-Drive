@@ -20,7 +20,7 @@ import jakarta.persistence.Id;
 
 @Entity
 @JsonComponent
-public class Telemtry {
+public class Telemetry {
     
     // we expect a telemtry object to look something like the following
     // Any amount of tags and fields may be present
@@ -50,7 +50,7 @@ public class Telemtry {
     @Embeddable
     public record Tag(
                     String name, 
-                    @Column(name = "value") String val){};
+                    @Column(name = "\"value\"") String value){};
 
     // record to hold data of an influxdb field from our telemtry object
     // later we want to make this generic
@@ -59,7 +59,7 @@ public class Telemtry {
     public record Field(
                         String name,
                         String type, 
-                        @Column(name = "value") long val){};
+                        @Column(name = "\"value\"") long value){};
 
     @ElementCollection
     private List<Tag> tags;
@@ -69,9 +69,9 @@ public class Telemtry {
     private String timeStamp;
 
 
-    public Telemtry(){}
+    public Telemetry(){}
 
-    public Telemtry(String timeStamp, List<Tag> tags, List<Field> fields){
+    public Telemetry(String timeStamp, List<Tag> tags, List<Field> fields){
         this.timeStamp = timeStamp;
         this.tags = tags;
         this.fields = fields;
@@ -109,10 +109,10 @@ public class Telemtry {
     /**
      * Overrive the default deserializer behavior. 
      */
-	public static class Deserializer extends JsonObjectDeserializer<Telemtry> {
+	public static class Deserializer extends JsonObjectDeserializer<Telemetry> {
 
         @Override
-        protected Telemtry deserializeObject(com.fasterxml.jackson.core.JsonParser jsonParser,
+        protected Telemetry deserializeObject(com.fasterxml.jackson.core.JsonParser jsonParser,
                 DeserializationContext context, ObjectCodec codec, JsonNode tree) throws IOException {
                     
                 List<Tag> tags = new ArrayList<>();
@@ -151,7 +151,7 @@ public class Telemtry {
                 System.out.println("tags " + tags);
                 System.out.println("fields " + fields);
 
-                return new Telemtry(timeStamp, tags, fields);
+                return new Telemetry(timeStamp, tags, fields);
         }
 
 	}

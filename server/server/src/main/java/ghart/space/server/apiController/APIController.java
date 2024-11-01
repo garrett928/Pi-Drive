@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ghart.space.server.car.Car;
 import ghart.space.server.car.CarNotFoundException;
-import ghart.space.server.telemetry.Telemtry;
+import ghart.space.server.telemetry.Telemetry;
 import ghart.space.server.car.CarDBHelper;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
@@ -61,7 +61,7 @@ class APIController {
 
     // add a piece of telemetry data to a car
     @PostMapping("/cars/{id}/telemetry")
-    ResponseEntity<?> newCarTelemetry(@RequestBody Telemtry telemtry, @PathVariable Integer id) {
+    ResponseEntity<?> newCarTelemetry(@RequestBody Telemetry telemtry, @PathVariable Integer id) {
         // check the car exist first
         Car car = dbHelper.findById(id);
         if(car == null){ throw new CarNotFoundException(id); }

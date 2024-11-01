@@ -13,9 +13,9 @@ import com.influxdb.query.FluxRecord;
 import com.influxdb.query.FluxTable;
 
 import ghart.space.server.InfluxDBConnectionFactory;
-import ghart.space.server.telemetry.Telemtry;
-import ghart.space.server.telemetry.Telemtry.Field;
-import ghart.space.server.telemetry.Telemtry.Tag;
+import ghart.space.server.telemetry.Telemetry;
+import ghart.space.server.telemetry.Telemetry.Field;
+import ghart.space.server.telemetry.Telemetry.Tag;
 
 public class CarDBHelper {
 
@@ -139,7 +139,7 @@ public class CarDBHelper {
         return car;
     }
 
-    public void logTelemetry(Telemtry telemtry, Integer id) {
+    public void logTelemetry(Telemetry telemtry, Integer id) {
         InfluxDBClient client = this.getClient();
         Car car = this.findById(id);
         List<String> excludedTags = Arrays.asList("make", "model", "year");
@@ -157,7 +157,7 @@ public class CarDBHelper {
             line += ",";
             line += name;
             line += "=";
-            line += tag.val();
+            line += tag.value();
         }
 
         for(String tag : excludedTags){
@@ -192,7 +192,7 @@ public class CarDBHelper {
             }
             line += field.name();
             line += "=";
-            line += field.val();
+            line += field.value();
         }
 
         // add space to seperate the fields and the time stamp
