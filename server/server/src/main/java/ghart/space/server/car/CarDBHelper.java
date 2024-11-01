@@ -140,6 +140,8 @@ public class CarDBHelper {
     }
 
     public void logTelemetry(Telemetry telemtry, Integer id) {
+        System.out.println("Logging Car: " + String.valueOf(id));
+
         InfluxDBClient client = this.getClient();
         Car car = this.findById(id);
         List<String> excludedTags = Arrays.asList("make", "model", "year");
