@@ -44,7 +44,12 @@ public class CarDBHelper {
 
         List<FluxRecord> records = fluxTable.getRecords();
         for (FluxRecord record : records) {
+            try{
             carList.add(this.carFromRecord(record));
+            }
+            catch(NumberFormatException e){
+                System.err.println("Number format exception caught. Skipping record");
+            }
         }
 
         // TODO: make sure to close the client. However you do that
