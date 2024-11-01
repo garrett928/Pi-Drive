@@ -8,7 +8,7 @@ public class TelemetryApplication {
 
     public static void main(String... args) {
 
-        
+        System.out.println("Hello from Pi-Drive");
         InfluxDBConnectionFactory.initiateFactory();
         SpringApplication.run(TelemetryApplication.class, args);
     }
