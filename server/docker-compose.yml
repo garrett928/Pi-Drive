@@ -13,7 +13,7 @@ services:
       INFLUXDB_BUCKET: car-test
       INFLUXDB_MEASUREMENT: carTelementry
       # INFLUXDB_TOKEN_FILE: /run/secrets/influxdb_token
-    env_file: stack.env
+    env_file: ./../stack.env
     # uncomment ports if you are NOT using traefik
     ports:
       - 8080:8080
