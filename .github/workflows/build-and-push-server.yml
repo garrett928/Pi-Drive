@@ -7,6 +7,8 @@ on:
       - "server/server/**"
     branches:
       - main
+on:
+  workflow_dispatch:
 
 jobs:
   build-and-push:
