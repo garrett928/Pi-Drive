@@ -8,7 +8,7 @@ public class TelemetryApplication {
 
     public static void main(String... args) {
 
-        // InfluxDBConnectionFactory.initiateFactory();
+        InfluxDBConnectionFactory.initiateFactory();
         SpringApplication.run(TelemetryApplication.class, args);
     }
 }
