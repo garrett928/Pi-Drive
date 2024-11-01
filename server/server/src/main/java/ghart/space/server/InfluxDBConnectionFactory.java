@@ -50,6 +50,9 @@ public class InfluxDBConnectionFactory {
             }
         }
 
+        //sanitize token
+        token = token.replaceAll("\\r|\\n", "").trim();
+
         if(URL == null){
             System.err.println("Could not find environment variable INFLUXDB_URL. Application exit.");
             System.exit(0);
