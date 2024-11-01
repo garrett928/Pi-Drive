@@ -7,7 +7,6 @@ on:
       - "server/server/**"
     branches:
       - main
-on:
   workflow_dispatch:
 
 jobs:
