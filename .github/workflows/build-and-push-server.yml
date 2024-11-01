@@ -33,7 +33,8 @@ jobs:
 
       # Build the Java project using Gradle
       - name: Build with Gradle
-        run: ./server/server/gradlew clean bootjar
+        working-directory: server/server
+        run: gradlew clean bootjar
 
       # Log in to Docker Hub
       - name: Log in to Docker Hub
@@ -44,8 +45,9 @@ jobs:
 
       # Build the Docker image
       - name: Build Docker image
+        working-directory: server/server
         run: |
-          docker build -t ghart10/pidrive-server:latest server/server/
+          docker build -t ghart10/pidrive-server:latest .
 
       # Push the Docker image to the registry
       - name: Push Docker image
