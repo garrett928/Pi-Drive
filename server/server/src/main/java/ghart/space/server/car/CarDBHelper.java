@@ -157,7 +157,7 @@ public class CarDBHelper {
             line += ",";
             line += name;
             line += "=";
-            line += tag.value();
+            line += tag.val();
         }
 
         for(String tag : excludedTags){
@@ -192,7 +192,7 @@ public class CarDBHelper {
             }
             line += field.name();
             line += "=";
-            line += field.value();
+            line += field.val();
         }
 
         // add space to seperate the fields and the time stamp

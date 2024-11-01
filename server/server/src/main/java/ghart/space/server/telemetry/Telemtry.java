@@ -12,6 +12,7 @@ import com.fasterxml.jackson.core.ObjectCodec;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.Entity;
@@ -47,13 +48,18 @@ public class Telemtry {
 
     // Record to hold the data of an influxdb tag from our telemtry object
     @Embeddable
-    public record Tag(String name, String value){};
+    public record Tag(
+                    String name, 
+                    @Column(name = "value") String val){};
 
     // record to hold data of an influxdb field from our telemtry object
     // later we want to make this generic
     // private record Field<T>(String name, String type, T value){};
     @Embeddable
-    public record Field(String name, String type, long value){};
+    public record Field(
+                        String name,
+                        String type, 
+                        @Column(name = "value") long val){};
 
     @ElementCollection
     private List<Tag> tags;
