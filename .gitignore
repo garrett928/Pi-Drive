@@ -5,3 +5,7 @@
 /.vscode/*
 
 **/influxdb_token*
+
+# ignore draw IO files temp files
+*.dtmp
+*.bkp
