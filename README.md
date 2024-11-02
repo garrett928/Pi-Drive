@@ -121,9 +121,9 @@ These are notes to myself.
   - The goal here being to prevent a script crashing from preventing anymore data from being sent to the server
   - This is a later feature / issue to worry about, however
   - For now, our telemetry script will simply check to see if the process already exist and then exit if it does
-  - Sanitize user input from the API. E.g make user input uniform case, check for escaped characters or sql injection?
-  - check that objects exist or dont exist in the data base where appropiate
-  - How to handle power draw of raspberry pi? Once the telemtry server is caught up with the pi have the pi turn off. If the telemetry server is not found within X minutes, turn the pi off?
+- Sanitize user input from the API. E.g make user input uniform case, check for escaped characters or sql injection?
+- check that objects exist or dont exist in the data base where appropiate
+- How to handle power draw of raspberry pi? Once the telemtry server is caught up with the pi have the pi turn off. If the telemetry server is not found within X minutes, turn the pi off?
 
 # Useful Resources
 
