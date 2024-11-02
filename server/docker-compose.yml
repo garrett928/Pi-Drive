@@ -1,3 +1,7 @@
+# DO NOT USE THIS DOCKER COMPOSE
+# THIS IS SPECIFIC TO MY HOMELAB SETUP
+# PLEASE SEE sample-docker-compose.yml INSTEAD
+
 services:
   pidrive:
     image: ghart10/pidrive-server:latest
@@ -14,11 +18,7 @@ services:
       INFLUXDB_MEASUREMENT: carTelementry
       # INFLUXDB_TOKEN_FILE: /run/secrets/influxdb_token
     env_file: ./../stack.env
-    # uncomment ports if you are NOT using traefik
-    ports:
-      - 8080:8080
     
-    # comment out or remove labels if you are NOT using traefik
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.pidrive.rule=Host(`pidrive.ghart.space`)"
