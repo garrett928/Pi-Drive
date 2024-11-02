@@ -9,13 +9,14 @@ Car data logging stack with raspberry pi collection front end and Java Spring Bo
 - [InfluxDB](https://www.influxdata.com/) (Timeseries SQL database)
 - Docker
 - [Grafana](https://grafana.com/grafana/) (Visualization)
+- Anisble (Automate raspberry pi configuration)
 - Python
 - [OBD-II](https://www.csselectronics.com/pages/obd2-explained-simple-intro)
 
 # Overview
 The data collection is handeled by a bluetooth OBD reader and a raspberry pi. When powered on the pi continously checks for the bluetooth dongle and, if present, reads data from it. The data is then written to a local database on the pi. Also while powered on, another process is continously checking if I'm connected to my home wifi. If I am connected to my wifi then this process will ask my telemetry server what was the timestamp of the last piece of data it received. If the timestamp for the latest data on the local raspberry pi database is more recent than the timestamp of the telemetry server then the raspberry pi will send telemetry records one at a time to the telemetry server. This is nice because if the pi looses connection to the telemetry server (e.g I drive my car somewhere else) then the pi will pick up where it left off the next time its within range of my wifi.  
 ![Car Data Collection Overview](PiDrive-pi-diagram.png)  
-The telemetry server is a simple RESTful API written in Java using the Spring Boot framework. It only has two core jobs: receive telemetry data and write telemetry data to InfluxDB. Before telemetry data can be received the server must be told about the existance of a car via the `/cars` endpoint. After the server is told about a car a unique ID is generated and telemetry data can be sent to the server via the `/cars/{id}/telemetry` endpoint. The check what cars exist and find their ids the `/cars` endpoint can be queried.  
+The telemetry server is a simple RESTful API written in Java using the Spring Boot framework. It only has two core jobs: receive telemetry data and write telemetry data to InfluxDB. Before telemetry data can be received the server must be told about the existance of a car via the `/cars` endpoint. After the server is told about a car a unique ID is generated and telemetry data can be sent to the server via the `/cars/{id}/telemetry` endpoint. To check what cars exist and find a car's id the `/cars` endpoint can be queried.  
 ![API Server Overview](PiDrive-api-server.png)
 
 
