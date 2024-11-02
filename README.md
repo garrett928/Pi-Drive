@@ -90,7 +90,23 @@ cd server/server
 docker build . -t telemetry-server
 ```
 
+edit the docker compose file to use your new docker image.
+
 </details>
+
+1. ```
+  cd server
+  docker-compose -f sample-docker-compose.yml up
+  ```
+
+2. Navitage to the influxdb setup page at localhost:8086 and configure your influxdb username, password, organization, and bucket.
+
+3. Edit the environment variables in the pidrive-server of `sample-docker-compose.yml` to match the configuration you made in step 2.
+
+4. create a influxdb_token.txt file and paste your influxdb api token.
+
+5. stop and restart your docker containers!
+
 
 ### Debugging Commands
 
