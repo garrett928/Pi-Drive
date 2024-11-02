@@ -2,9 +2,12 @@
 
 RasberryPi based car logging and telemetry software
 
+![Car Data Collection Overview](PiDrive-pi-diagram.png)
+
 # Repository Structure
 
 ```
+.github/workflows/ (github actions workflow for building jar file and pushing docker image)
 rasp-pi/ (Ansible playbook and application files to configure raspberry-pi for data logging)
 server/ (software stack for collecting and monitoring car telemetry from raspberry-pi)
 .gitignore
