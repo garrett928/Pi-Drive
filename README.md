@@ -94,10 +94,7 @@ edit the docker compose file to use your new docker image.
 
 </details>
 
-1. ```
-  cd server
-  docker-compose -f sample-docker-compose.yml up
-  ```
+1. `cd server` and then `docker-compose -f sample-docker-compose.yml up`
 
 2. Navitage to the influxdb setup page at localhost:8086 and configure your influxdb username, password, organization, and bucket.
 
