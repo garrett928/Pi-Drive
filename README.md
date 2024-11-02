@@ -1,8 +1,23 @@
 # Pi-Drive
 
-RasberryPi based car logging and telemetry software
+Car data logging stack with raspberry pi collection front end and Java Spring Boot API backend. Every vehical sold in the US since 1996 is required to support the OBD-II protocol. OBD-II is focused on providing emissions data and exposes things like fuel consumption, coolant temperature, vehical speed, engine RPM, etc. This data can be useful for gaining an insight into your cars performance, especially if you have an older car like mine with the check engine light stuck on. The goal of this project is to record as much OBD data as I can and then visualize it in Grafana. I'm not a car guy and I'm not interested in tuning or getting max performance out of my car. I simply want to monitor its health and properly maintain it. Cars are expensive!
 
-![Car Data Collection Overview](PiDrive-pi-diagram.png)
+## Techologies Used
+
+- Java Spring Boot
+- RESTFul API
+- [InfluxDB](https://www.influxdata.com/) (Timeseries SQL database)
+- Docker
+- [Grafana](https://grafana.com/grafana/) (Visualization)
+- Python
+- [OBD-II](https://www.csselectronics.com/pages/obd2-explained-simple-intro)
+
+# Overview
+The data collection is handeled by a bluetooth OBD reader and a raspberry pi. When powered on the pi continously checks for the bluetooth dongle and, if present, reads data from it. The data is then written to a local database on the pi. Also while powered on, another process is continously checking if I'm connected to my home wifi. If I am connected to my wifi then this process will ask my telemetry server what was the timestamp of the last piece of data it received. If the timestamp for the latest data on the local raspberry pi database is more recent than the timestamp of the telemetry server then the raspberry pi will send telemetry records one at a time to the telemetry server. This is nice because if the pi looses connection to the telemetry server (e.g I drive my car somewhere else) then the pi will pick up where it left off the next time its within range of my wifi.  
+![Car Data Collection Overview](PiDrive-pi-diagram.png)  
+The telemetry server is a simple RESTful API written in Java using the Spring Boot framework. It only has two core jobs: receive telemetry data and write telemetry data to InfluxDB. Before telemetry data can be received the server must be told about the existance of a car via the `/cars` endpoint. After the server is told about a car a unique ID is generated and telemetry data can be sent to the server via the `/cars/{id}/telemetry` endpoint. The check what cars exist and find their ids the `/cars` endpoint can be queried.  
+![API Server Overview](PiDrive-api-server.png)
+
 
 # Repository Structure
 
@@ -17,7 +32,7 @@ README.md
 
 # Setup
 
-## Equipment Requirements
+## Physical Hardware Requirements
 
 - Raspberry Pi
   - I'm using a model 3. Other models would work fine too.
@@ -29,7 +44,7 @@ README.md
 Requirments for software on the computer you are using to setup your pi and server.
 
 - [Ansible](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
-- Docker
+- [Docker](https://docs.docker.com/engine/install/)
 
 If you would like to edit the source code there are additional requirements.
 
@@ -95,6 +110,7 @@ These are notes to myself.
   - For now, our telemetry script will simply check to see if the process already exist and then exit if it does
   - Sanitize user input from the API. E.g make user input uniform case, check for escaped characters or sql injection?
   - check that objects exist or dont exist in the data base where appropiate
+  - How to handle power draw of raspberry pi? Once the telemtry server is caught up with the pi have the pi turn off. If the telemetry server is not found within X minutes, turn the pi off?
 
 # Useful Resources
 
