@@ -1,0 +1,37 @@
+services:
+  pidrive:
+    image: ghart10/pidrive-server:latest
+    container_name: pidrive-server
+    restart: unless-stopped
+    secrets:
+      - influxdb_token
+    environment:
+      INFLUXDB_URL: http://influxdb:8086
+      INFLUXDB_ORG: REPLACE_ORG_NAME
+      INFLUXDB_BUCKET: REPLACE_BUCKET_NAME
+      INFLUXDB_MEASUREMENT: REPLACE_MEASUREMENT_NAME
+      INFLUXDB_TOKEN_FILE: /run/secrets/influxdb_token
+    ports:
+      - 8080:8080
+
+  influxdb:
+    container_name: influxdb
+    image: influxdb:latest
+    volumes:
+      - influxdb-data:/var/lib/influxdb2
+      - influxdb-config:/etc/influxdb2
+    ports:
+      - 8086:8086
+
+    environment:
+        INFLUXDB_DATA_DIR: /var/lib/influxdb/data
+        INFLUXDB_DATA_WAL_DIR: /var/lib/influxdb/data
+    restart: unless-stopped
+
+secrets:
+  influxdb_token:
+    file: ./influxdb_token.txt
+
+volumes:
+  influxdb-data:
+  influxdb-config:
