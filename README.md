@@ -4,8 +4,7 @@ Car data logging stack with raspberry pi collection front end and Java Spring Bo
 
 ## Techologies Used
 
-- Java Spring Boot
-- RESTFul API
+- Java Spring Boot (RESTful API)
 - [InfluxDB](https://www.influxdata.com/) (Timeseries SQL database)
 - Docker
 - [Grafana](https://grafana.com/grafana/) (Visualization)
@@ -24,7 +23,7 @@ The telemetry server is a simple RESTful API written in Java using the Spring Bo
 
 ```
 .github/workflows/ (github actions workflow for building jar file and pushing docker image)
-rasp-pi/ (Ansible playbook and application files to configure raspberry-pi for data logging)
+rasp-pi/ (application files to configure raspberry-pi for data logging)
 server/ (software stack for collecting and monitoring car telemetry from raspberry-pi)
 .gitignore
 LICENSE
@@ -55,7 +54,7 @@ If you would like to edit the source code there are additional requirements.
 - Java 23
 - VScode with the following extensions
   - [Spring Boot Extension Pack](https://marketplace.visualstudio.com/items?itemName=vmware.vscode-boot-dev-pack)
-  - [Java Developor Pack](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
+  - [Extension Pack for Java](https://marketplace.visualstudio.com/items?itemName=vscjava.vscode-java-pack)
 
 </details>
 
@@ -72,6 +71,7 @@ I'm going to lightly gloss over the pi setup since this is not intended to be a 
   - This can be done through the customize os option in pi imager
 
 ### Install project software and tools onto pi
+Note: the playbook is unfisnihed and being rewritten as I switch from the raspberry pi 3b to the pi zero w.  
 
 `ansible-playbook -i ./rasp-pi/ansible/inventory.ini ./rasp-pi/ansible/configure-pi.yaml `
 
@@ -82,8 +82,9 @@ If you are editing the source code then you should follow these additional steps
 <details>
 
 <summary>Developer steps</summary>
+The contents of the java source code are compiled into a jar file. The jar file is built into a docker container for ease of deployment.
 
-Running the following commands will package any edits you've made to the source code into a jar file and then build a new docker container with the update jar file.
+Running the following commands will package any edits you've made to the source code into a new jar file and then build a new docker container with the update jar file. You are welcome to skip these steps and the docker compose file will the latest docker image of the telemetry server by default.
 
 ```
 cd server/server
@@ -91,7 +92,7 @@ cd server/server
 docker build . -t telemetry-server
 ```
 
-edit the docker compose file to use your new docker image.
+Be sure to edit the docker compose file to use your new docker image.
 
 </details>
 
@@ -101,16 +102,17 @@ edit the docker compose file to use your new docker image.
 
 3. Edit the environment variables in the pidrive-server of `sample-docker-compose.yml` to match the configuration you made in step 2.
 
-4. create a influxdb_token.txt file and paste your influxdb api token.
+4. Create an influxdb_token.txt file and paste your influxdb api token. (The file should be empty except for the api token. Watch for extra whitespace and new line characters!)
 
-5. stop and restart your docker containers!
+5. Stop and restart your docker containers!
 
 
 ### Debugging Commands
 
 - `curl -X POST 127.0.0.1:8080/cars -H 'Content-type:application/json' -d '{"make": "Honda", "model": "year", year: 2007}'`
+  - Send a request to the `/cars` endpoint to create a new car with the json data inline
 - `curl -X POST 127.0.0.1:8080/cars -H 'Content-type:application/json' -d  @./server/sample-api-telemetry.json`
-  
+  - Send a request to the `/cars` endpoint to create a new car with the json data from a file
 
 ### Notes and TODO
 
